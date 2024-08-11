@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/docgen"
+	"github.com/go-chi/jwtauth/v5"
 	"github.com/go-chi/render"
 	"go.uber.org/zap"
 )
@@ -23,6 +24,17 @@ type Server struct {
 }
 
 var routes = flag.Bool("routes", false, "Generate router documentation")
+
+var tokenAuth *jwtauth.JWTAuth
+
+func init() {
+	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
+
+	// For debugging/example purposes, we generate and print
+	// a sample jwt token with claims `user_id:123` here:
+	_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"user_id": 123})
+	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+}
 
 func NewServer(log *zap.SugaredLogger, app *app.App, config *config.ConfigHttpServer) *Server {
 	log.Info("URL api " + config.Host + ":" + config.Port)
@@ -37,6 +49,11 @@ func NewServer(log *zap.SugaredLogger, app *app.App, config *config.ConfigHttpSe
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
 	router.Use(render.SetContentType(render.ContentTypeJSON))
+
+	router.Post("/auth", h.Authorization)
+	router.Post("/reg", h.Registration)
+
+	router.Use(jwtauth.Authenticator(tokenAuth))
 
 	router.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("pong"))
