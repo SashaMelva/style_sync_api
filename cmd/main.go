@@ -6,10 +6,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/SashaMelva/style_sync_api/adapter/pg"
 	"github.com/SashaMelva/style_sync_api/internal/app"
 	"github.com/SashaMelva/style_sync_api/internal/config"
 	"github.com/SashaMelva/style_sync_api/internal/logger"
-	"github.com/SashaMelva/style_sync_api/internal/storage"
 	"github.com/SashaMelva/style_sync_api/server/http"
 )
 
@@ -18,7 +18,7 @@ func main() {
 	config := config.New(configFile)
 	log := logger.New(config.Logger, "../log/")
 
-	storage := storage.New(config.DataBase, log)
+	storage := pg.New(config.DataBase, log)
 	// err := migrator.RunMigrationsPg(connectionDB, "migrations")
 
 	// if err != nil {
