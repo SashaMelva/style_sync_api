@@ -69,6 +69,8 @@ func NewServer(log *zap.SugaredLogger, app *app.App, config *config.ConfigHttpSe
 		r.Use(jwtauth.Authenticator(tokenAuth))
 		r.Mount("/user", userRouter(h))
 		r.Mount("/weather_report", weatherReportRouter(h))
+		r.Mount("/", wardrobeRouter(h))
+
 	})
 
 	if *routes {

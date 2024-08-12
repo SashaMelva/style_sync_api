@@ -5,6 +5,7 @@ import (
 	"github.com/SashaMelva/style_sync_api/adapter/pg"
 	"github.com/SashaMelva/style_sync_api/internal/auth"
 	"github.com/SashaMelva/style_sync_api/internal/profile"
+	"github.com/SashaMelva/style_sync_api/internal/wardrobe"
 	weatherreport "github.com/SashaMelva/style_sync_api/internal/weather_report"
 	"go.uber.org/zap"
 )
@@ -17,6 +18,7 @@ type App struct {
 	AuthenticationApi   *auth.Api
 	ProfileUserApi      *profile.Api
 	WeatherReportClient *weatherreport.Api
+	WardrobeApi         *wardrobe.Api
 }
 
 func New(logger *zap.SugaredLogger, storage *pg.Storage) *App {
@@ -53,11 +55,22 @@ func New(logger *zap.SugaredLogger, storage *pg.Storage) *App {
 		return nil
 	}
 
+	wardrobe, err := wardrobe.NewApi(
+		wardrobe.ApiConfig{
+			WardrobeReader: storage,
+			WardrobeWriter: storage,
+		})
+	if err != nil {
+		logger.Fatal(err)
+		return nil
+	}
+
 	return &App{
 		storage:             storage,
 		Logger:              logger,
 		AuthenticationApi:   apiAuth,
 		ProfileUserApi:      profileAuth,
 		WeatherReportClient: weatherReportApi,
+		WardrobeApi:         wardrobe,
 	}
 }
