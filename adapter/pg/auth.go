@@ -7,5 +7,5 @@ import (
 )
 
 func (s *Storage) Authorization(ctx context.Context, user auth.AuthUser) error   { return nil }
-func (s *Storage) Registration(ctx context.Context, new auth.NewAuthUser) error  { return nil }
+func (s *Storage) Registration(ctx context.Context, new auth.AuthUser) error     { return nil }
 func (s *Storage) UnAuthorization(ctx context.Context, user auth.AuthUser) error { return nil }

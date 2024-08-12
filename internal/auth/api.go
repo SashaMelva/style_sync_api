@@ -17,5 +17,5 @@ func NewApi(c ApiConfig) (*Api, error) {
 }
 
 func (api Api) Authorization(ctx context.Context, user AuthUser) error   { return nil }
-func (api Api) Registration(ctx context.Context, new NewAuthUser) error  { return nil }
+func (api Api) Registration(ctx context.Context, new AuthUser) error     { return nil }
 func (api Api) UnAuthorization(ctx context.Context, user AuthUser) error { return nil }

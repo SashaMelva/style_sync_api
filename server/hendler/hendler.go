@@ -7,6 +7,9 @@ import (
 	"go.uber.org/zap"
 )
 
+const TimeoutWriter int = 20
+const TimeoutReader int = 20
+
 type Service struct {
 	log zap.SugaredLogger
 	app app.App

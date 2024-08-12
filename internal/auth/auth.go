@@ -2,18 +2,10 @@ package auth
 
 import (
 	"context"
-
-	"github.com/gofrs/uuid"
 )
 
 type (
-	NewAuthUser struct {
-		Email    string
-		Password string
-	}
-
 	AuthUser struct {
-		Id       uuid.UUID
 		Email    string
 		Password string
 	}
@@ -21,6 +13,6 @@ type (
 
 type Authentication interface {
 	Authorization(ctx context.Context, user AuthUser) error
-	Registration(ctx context.Context, new NewAuthUser) error
+	Registration(ctx context.Context, new AuthUser) error
 	UnAuthorization(ctx context.Context, user AuthUser) error
 }

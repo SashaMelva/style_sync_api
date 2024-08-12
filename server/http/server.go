@@ -50,19 +50,25 @@ func NewServer(log *zap.SugaredLogger, app *app.App, config *config.ConfigHttpSe
 	router.Use(middleware.URLFormat)
 	router.Use(render.SetContentType(render.ContentTypeJSON))
 
-	router.Post("/auth", h.Authorization)
-	router.Post("/reg", h.Registration)
-
-	router.Use(jwtauth.Authenticator(tokenAuth))
-
 	router.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("pong"))
 	})
+	router.Post("/auth", h.Authorization)
+	router.Post("/un_auth", h.Authorization)
+	router.Post("/reg", h.Registration)
+	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(404)
+		w.Write([]byte("route does not exist"))
+	})
+	router.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(405)
+		w.Write([]byte("method is not valid"))
+	})
 
 	router.Route("/api/v1", func(r chi.Router) {
+		r.Use(jwtauth.Authenticator(tokenAuth))
 		r.Mount("/user", userRouter(h))
 		r.Mount("/weather_report", weatherReportRouter(h))
-		r.Mount("/admin", adminRouter(h))
 	})
 
 	if *routes {

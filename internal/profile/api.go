@@ -2,6 +2,8 @@ package profile
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 type ApiConfig struct {
@@ -21,7 +23,7 @@ func NewApi(c ApiConfig) (*Api, error) {
 	}, nil
 }
 
-func (api Api) GetProfile(ctx context.Context) (*Profile, error) {
+func (api Api) GetProfile(ctx context.Context, userId uuid.UUID) (*Profile, error) {
 	return nil, nil
 }
 
