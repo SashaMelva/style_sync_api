@@ -12,21 +12,21 @@ type ApiConfig struct {
 }
 
 type Api struct {
-	profileReader ProfileReader
-	profileWriter ProfileWriter
+	config ApiConfig
 }
 
 func NewApi(c ApiConfig) (*Api, error) {
 	return &Api{
-		profileReader: c.ProfileReader,
-		profileWriter: c.ProfileWriter,
+		config: ApiConfig{
+			ProfileReader: c.ProfileReader,
+			ProfileWriter: c.ProfileWriter},
 	}, nil
 }
 
 func (api Api) GetProfile(ctx context.Context, userId uuid.UUID) (*Profile, error) {
-	return nil, nil
+	return api.config.ProfileReader.GetProfile(ctx, userId)
 }
 
 func (api Api) UpdateProfile(ctx context.Context, profil Profile) error {
-	return nil
+	return api.config.ProfileWriter.UpdateProfile(ctx, profil)
 }

@@ -9,14 +9,18 @@ type ApiConfig struct {
 }
 
 type Api struct {
-	weatherReportReader WeatherReportReader
+	config ApiConfig
 }
 
 func NewApi(c ApiConfig) (*Api, error) {
-	return &Api{
-		weatherReportReader: c.WeatherReportReader,
-	}, nil
+	return &Api{config: ApiConfig{
+		WeatherReportReader: c.WeatherReportReader,
+	}}, nil
 }
 
-func (api Api) GetByWeek(ctx context.Context) (*WeatherReport, error)   { return nil, nil }
-func (api Api) GetByMounth(ctx context.Context) (*WeatherReport, error) { return nil, nil }
+func (api Api) GetByWeek(ctx context.Context) (*WeatherReport, error) {
+	return api.config.WeatherReportReader.GetByWeek(ctx)
+}
+func (api Api) GetByMounth(ctx context.Context) (*WeatherReport, error) {
+	return api.config.WeatherReportReader.GetByMounth(ctx)
+}
