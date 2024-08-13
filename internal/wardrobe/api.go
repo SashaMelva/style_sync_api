@@ -36,7 +36,7 @@ func (api Api) AddClotheToWardrobe(ctx context.Context, wardrobeId uuid.UUID, cl
 func (api Api) DeleteClotheToWardrobe(ctx context.Context, wardrobeId uuid.UUID, clotheId uuid.UUID) error {
 	return api.config.WardrobeWriter.DeleteClotheToWardrobe(ctx, wardrobeId, clotheId)
 }
-func (api Api) AddWardrobe(ctx context.Context, wardrobe NewWardrobe) error {
+func (api Api) AddWardrobe(ctx context.Context, wardrobe Wardrobe) error {
 	return api.config.WardrobeWriter.AddWardrobe(ctx, wardrobe)
 }
 func (api Api) UpdateWardrobe(ctx context.Context, wardrobe Wardrobe) error {

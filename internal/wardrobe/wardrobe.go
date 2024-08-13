@@ -7,17 +7,12 @@ import (
 )
 
 type Wardrobe struct {
-	Id       uuid.UUID
-	UserId   uuid.UUID
-	Title    string
-	Category string
-	Clothes  []Clothe
-}
-type NewWardrobe struct {
-	UserId   uuid.UUID
-	Title    string
-	Category string
-	Clothes  []Clothe
+	Id          uuid.UUID `json:"id,omitempty"`
+	UserId      uuid.UUID `json:"user_id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description,omitempty"`
+	Category    string    `json:"category"`
+	Clothes     []Clothe  `json:"clovers"`
 }
 
 type WardrobeReader interface {
@@ -29,7 +24,7 @@ type WardrobeWriter interface {
 	AddClotheToWardrobe(ctx context.Context, wardrobeId uuid.UUID, clothe Clothe) error
 	DeleteClotheToWardrobe(ctx context.Context, wardrobeId uuid.UUID, clotheId uuid.UUID) error
 
-	AddWardrobe(ctx context.Context, wardrobe NewWardrobe) error
+	AddWardrobe(ctx context.Context, wardrobe Wardrobe) error
 	UpdateWardrobe(ctx context.Context, wardrobe Wardrobe) error
 	DeleteWardrobe(ctx context.Context, wardrobe uuid.UUID) error
 }
